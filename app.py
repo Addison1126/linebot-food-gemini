@@ -1,10 +1,6 @@
 import os
 import json
 import logging
-import google.generativeai as genai
-# --- 新增這行：印出版本號 ---
-print(f"目前使用的 GenAI 套件版本: {genai.__version__}", flush=True) 
-# -------------------------
 from flask import Flask, request, abort
 
 from linebot import LineBotApi, WebhookHandler
@@ -13,6 +9,13 @@ from linebot.models import MessageEvent, TextMessage, FlexSendMessage
 
 import google.generativeai as genai
 
+app = Flask(__name__)
+
+# --- 強制印出版本資訊 ---
+print(f"目前使用的 GenAI 套件版本: {genai.__version__}", flush=True) 
+# ----------------------
+
+# ... (後面接原本的程式碼)
 app = Flask(__name__)
 
 # 設定 Log，方便除錯

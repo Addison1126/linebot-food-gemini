@@ -22,9 +22,21 @@ GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-# 設定 Gemini
+# --- 設定 Gemini ---
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-pro')
+
+# 嘗試列出所有可用模型 (Debug 用)
+# 這段會把你的 API Key 能用的模型印在 Render Log 裡
+try:
+    print("正在檢查可用模型...", flush=True)
+    for m in genai.list_models():
+        if 'generateContent' in m.supported_generation_methods:
+            print(f"可用模型: {m.name}", flush=True)
+except Exception as e:
+    print(f"無法列出模型: {e}", flush=True)
+
+# 使用目前最標準的模型
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 def get_gemini_recommendation(location, food_type, budget):
     prompt = f"""
